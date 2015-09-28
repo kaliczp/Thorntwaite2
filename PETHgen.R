@@ -6,7 +6,6 @@ PETH.gen <- function(Temp, lat = 47.5){
     Day.length.hour <- daylength.calc(Latitude = lat)
     ## Temp begin in January!
     PETH.daily.average <- 29.8*Day.length.hour*(SatVaporPress/(Temp+273.2)) # [mm/nap]
-    day.in.month <- day.in.month.calc(index(Temp))
-    PETH.month <- PETH.day * days.in.month # [mm/hó]
-    PETH.month
+    days.in.month <- day.in.month.calc(index(Temp))
+    PETH.daily.average * days.in.month # [mm/hó]
 }
