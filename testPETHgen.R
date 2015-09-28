@@ -30,3 +30,5 @@ for(tti in 2:4)
     test.meteo.df[,tti] <- as.numeric(test.meteo.df[,tti])
 require(xts)
 test.meteo.xts <- xts(test.meteo.df[-1] , order.by = as.Date(test.meteo.df$Index))
+
+PETH.xts <- PETH.gen(test.meteo.xts$t)
