@@ -1,4 +1,4 @@
-et.calc <- function(Temp, Prec, PET.real, SOIL_MAX = 209.7) {
+et.calc <- function(SOIL_MAX, Temp, Prec, PET.real) {
     ## convert xts data to ordinary vector
     
     ## Make empty data.frame
