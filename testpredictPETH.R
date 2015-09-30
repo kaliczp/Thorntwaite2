@@ -1,1 +1,1 @@
-predict.PETH(seg.result, PETH.xts)
+PET.proj <- predict.PETH(seg.result, PETH.xts)
