@@ -6,7 +6,7 @@ lm.fit <- lm(CREMAP ~ PETH - 1 , data=forsegment.df)
 seg.result <- segmented(lm.fit, seg.Z= ~PETH, psi=40)
 
 ## A graphical test
-plot(forsegment.df,xlim=c(0,max(forsegment.df$PETH)),ylim=c(0,max(forsegment.df$CREMAP)), type="n", xlab="PETH [mm]",ylab="ET CREMAP [mm/month]", xaxs="i", yaxs="i")
+plot(forsegment.df,xlim=c(0,max(forsegment.df$PETH)*1.05),ylim=c(0,max(forsegment.df$CREMAP)*1.05), type="n", xlab="PETH [mm]",ylab="ET CREMAP [mm/month]", xaxs="i", yaxs="i")
 points(forsegment.df[forsegment.df$PETH < seg.result$psi[2],], col="red", pch=24, bg="red")
 points(forsegment.df[forsegment.df$PETH >= seg.result$psi[2],], col="blue", pch=23, bg="blue")
 plot(seg.result,add=T, rug=F, lwd=2)
