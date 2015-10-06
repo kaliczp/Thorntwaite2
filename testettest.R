@@ -8,4 +8,6 @@ for(tti in 100:10000){
   points(tti,et.test(tti,test.meteo.xts$t, test.meteo.xts$P, PET.proj, test.meteo.xts[,1]), pch=".")
 }
 axis(1,500,tck=1,lab=F)
-SOIL.MAX=500
+SOIL.MAX <- 500
+
+et.calc(SOIL.MAX,Temp = test.meteo.xts$t, Prec=test.meteo.xts$P, PET.real=PET.proj)
