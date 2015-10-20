@@ -20,21 +20,46 @@ lines(density(et_yearly_dm.10),lwd=2)
 legend("topleft",c("2010-2040","2040-2070","2070-2100"),lwd=2,col=1:3)
 
 #######################################################################
+#######################################################################
+#######################################################################
 
-## ET histogram: mean
+## ET histogram: max
 
 et_yearly_dm_max = apply.yearly (et.pred.dm$ET_M, max)
 et_yearly_knmi_max = apply.yearly (et.pred.knmi$ET_M, max)
 et_yearly_smhirca_max = apply.yearly (et.pred.smhirca$ET_M, max)
 et_yearly_remo_max = apply.yearly (et.pred.remo$ET_M, max)
 
-plot.density.timewindow <- function(x, time.window=c('2010/2040','2040/2070','2070/2100'), ...) {
-    if(!is.xts(x)) {
-        stop("Argument is not an xts!")
-    }
-    x.max <- max(x)
-    plot(density(x[time.window[1]),lwd=2, ylim=c(0,x.max), ... )
-    lines(density((x[time.window[2]),lwd=2,col=2)
-    lines(density((x[time.window[3]),lwd=2,col=3)
-    legend("topleft",time.window,lwd=2,col=1:3)
+plot(et_yearly_smhirca_max)
+lines(et_yearly_dm_max,col=2)
+
+et_yearly_dm_max.10 = apply.yearly (et.pred.dm$ET_M['2010/2040'], max)
+et_yearly_dm_max.40 = apply.yearly (et.pred.dm$ET_M['2040/2070'], max)
+et_yearly_dm_max.70 = apply.yearly (et.pred.dm$ET_M['2070/2100'], max)
+
+plot(density(et_yearly_dm_max.40),lwd=2,col=2, main="", xlab="ET_M_max [mm]")
+lines(density(et_yearly_dm_max.70),lwd=2,col=3)
+lines(density(et_yearly_dm_max.10),lwd=2)
+legend("topleft",c("2010-2040","2040-2070","2070-2100"),lwd=2,col=1:3)
+
+
+#######################################################################
+
+
+plot.density.timewindow <- function(x, time.window=c('2010/2040','2040/2070','2070/2100'), szorzo=1.04, legend.place="left", ...) {
+  if(!is.xts(x)) {
+    stop("Argument is not an xts!")
+  }
+  x.nona=na.omit(x)
+  x.xlim = c(min(x),max(x))
+  x.max <- max(density(x.nona)$y)*szorzo
+  plot(density(x[time.window[1]]),lwd=2, ylim=c(0,x.max), col=3, ... )
+  lines(density(x[time.window[2]]),lwd=2,col=2)
+  lines(density(x[time.window[3]]),lwd=2)
+  legend(paste0("top",legend.place),time.window,lwd=2,col=3:1)
 }
+
+plot.density.timewindow(apply.yearly (et.pred.remo$ET_M, max),main="",xlab="")
+plot.density.timewindow(apply.yearly (et.pred.remo$SOIL_M, min), szorzo=1.2, legend.place="right", main="", xlab="SM min [mm]", ylab="Rel. gyak.")
+plot.density.timewindow(apply.yearly (et.pred.remo$ET_M, max), szorzo=1.2, main="", ylab="Rel. gyak.", xlab="ET max [mm/hó]")
+
