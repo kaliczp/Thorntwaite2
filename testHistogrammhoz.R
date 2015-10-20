@@ -28,13 +28,5 @@ et_yearly_knmi_max = apply.yearly (et.pred.knmi$ET_M, max)
 et_yearly_smhirca_max = apply.yearly (et.pred.smhirca$ET_M, max)
 et_yearly_remo_max = apply.yearly (et.pred.remo$ET_M, max)
 
-plot.density.timewindow <- function(x, time.window=c('2010/2040','2040/2070','2070/2100'), ...) {
-    if(!is.xts(x)) {
-        stop("Argument is not an xts!")
-    }
-    x.max <- max(x)
-    plot(density(x[time.window[1]),lwd=2, ylim=c(0,x.max), ... )
-    lines(density((x[time.window[2]),lwd=2,col=2)
-    lines(density((x[time.window[3]),lwd=2,col=3)
-    legend("topleft",time.window,lwd=2,col=1:3)
-}
+
+plot.density.timewindow(et_yearly_dm_max,main="", xlab="ET_M [mm]")
