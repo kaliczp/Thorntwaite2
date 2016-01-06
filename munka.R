@@ -29,5 +29,30 @@ SOIL.MAX <- optimize(et.test, interval=c(100,10000), temp = rawmovar.xts$t, prec
 Present = et.calc(SOIL_MAX=SOIL.MAX,Temp = rawmovar.xts$t, Prec=rawmovar.xts$P, PET.real=PET.proj)
 Present
 
-remoproj = read.csv2("remo.csv", stringsAsFactors= FALSE) 
-remoproj.xts <- xts(remoproj[-1] , order.by = as.Date(remoproj$Index, format="%Y.%m.%d"))
+dmproj = read.csv2("DMI_HIRHAM5_A1B_ARPEGE_1951_2000.csv", stringsAsFactors= FALSE) 
+dmproj.xts <- xts(dmproj[-1] , order.by = as.Date(dmproj$Date, format="%Y-%m-%d"))
+plot(dmproj.xts$T)
+
+dmechproj = read.csv2("DMI_HIRHAM5_ECHAM5_1951_2000.csv", stringsAsFactors= FALSE) 
+dmechproj.xts <- xts(dmechproj[-1] , order.by = as.Date(dmechproj$Date, format="%Y-%m-%d"))
+plot(dmechproj.xts$T)
+
+remoproj = read.csv2("MPI-M-REMO_SCN_ECHAM5_1951_2000.csv", stringsAsFactors= FALSE) 
+remoproj.xts <- xts(remoproj[-1] , order.by = as.Date(remoproj$Date, format="%Y-%m-%d"))
+plot(remoproj.xts$T)
+
+dmproj = read.csv2("DMI_HIRHAM5_A1B_ARPEGE_1951_2000.csv", stringsAsFactors= FALSE) 
+dmproj.xts <- xts(dmproj[-1] , order.by = as.Date(dmproj$Date, format="%Y-%m-%d"))
+plot(dmproj.xts$T)
+
+knmiproj = read.csv2("KNMI_RACMO2_A1B_ECHAM5_r3_1951_2000.csv", stringsAsFactors= FALSE) 
+knmiproj.xts <- xts(knmiproj[-1] , order.by = as.Date(knmiproj$Date, format="%Y-%m-%d"))
+plot(knmiproj.xts$T)
+
+smhircaproj = read.csv2("SMHIRCA_A1B_BCM_1961_2000.csv", stringsAsFactors= FALSE) 
+smhircaproj.xts <- xts(smhircaproj[-1] , order.by = as.Date(smhircaproj$Date, format="%Y-%m-%d"))
+plot(smhircaproj.xts$T)
+
+dmfutureproj = read.csv2("DMI_HIRHAM5_ECHAM5_2001_2100.csv", stringsAsFactors= FALSE) 
+dmfutureproj.xts <- xts(dmfutureproj[-1] , order.by = as.Date(dmfutureproj$Date, format="%Y-%m-%d"))
+plot(dmfutureproj.xts$T)
