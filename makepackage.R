@@ -6,3 +6,7 @@ package.skeleton(name="et.proj", list= c("day.in.month.calc", "daylength.calc", 
 ## R CMD INSTALL -l localRlib et.proj_1.0.tar.gz
 ## cd localRlib
 ## zip -r et.proj_1.0.zip et.proj
+
+## Installation
+ install.packages("path_to_file", repos = NULL, type="source")
+## Substitute path_to_file_in Windows "C:\\et.proj_1.0.tar.gz"
