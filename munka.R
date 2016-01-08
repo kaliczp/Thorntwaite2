@@ -29,6 +29,22 @@ SOIL.MAX <- optimize(et.test, interval=c(100,10000), temp = rawmovar.xts$t, prec
 Present = et.calc(SOIL_MAX=SOIL.MAX,Temp = rawmovar.xts$t, Prec=rawmovar.xts$P, PET.real=PET.proj)
 Present
 
+PETHknmi.xts <- PETH.gen(knmi.xts$t)
+PET.proj.knmi <- predict.PETH(seg.result, PETHknmi.xts)
+Future.knmi <- et.calc(SOIL_MAX=SOIL.MAX,Temp = knmi.xts$t, Prec=knmi.xts$P, PET.real=PET.proj.knmi)
+
+PETHdm.xts <- PETH.gen(dm.xts$t)
+PET.proj.dm <- predict.PETH(seg.result, PETHdm.xts)
+Future.dm <- et.calc(SOIL_MAX=SOIL.MAX,Temp = dm.xts$t, Prec=dm.xts$P, PET.real=PET.proj.dm)
+
+PETHsm.xts <- PETH.gen(sm.xts$t)
+PET.proj.sm <- predict.PETH(seg.result, PETHsm.xts)
+Future.sm <- et.calc(SOIL_MAX=SOIL.MAX,Temp = sm.xts$t, Prec=sm.xts$P, PET.real=PET.proj.sm)
+
+PETHremo.xts <- PETH.gen(remo.xts$t)
+PET.proj.remo <- predict.PETH(seg.result, PETHremo.xts)
+Future.remo <- et.calc(SOIL_MAX=SOIL.MAX,Temp = remo.xts$t, Prec=remo.xts$P, PET.real=PET.proj.remo)
+
 dmproj = read.csv2("DMI_HIRHAM5_A1B_ARPEGE_1951_2000.csv", stringsAsFactors= FALSE) 
 dmproj.xts <- xts(dmproj[-1] , order.by = as.Date(dmproj$Date, format="%Y-%m-%d"))
 plot(dmproj.xts$T)
