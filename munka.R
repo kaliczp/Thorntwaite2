@@ -26,7 +26,10 @@ PET.proj <- predict.PETH(seg.result, PETH.xts)
 
 SOIL.MAX <- optimize(et.test, interval=c(100,10000), temp = rawmovar.xts$t, prec=rawmovar.xts$P, pet.real=PET.proj, cremap=rawmovar.xts[,1])$minimum
 
-Present = et.calc(SOIL_MAX=SOIL.MAX,Temp = rawmovar.xts$t, Prec=rawmovar.xts$P, PET.real=PET.proj)
+Present = et.calc(SOIL_MAX=SOIL.MAX,Temp = raw.xts$t, Prec=raw.xts$P, PET.real=PET.proj)
+Present
+
+## Present = et.calc(SOIL_MAX=SOIL.MAX,Temp = raw.xts$t, Prec=raw.xts$P, PET.real=PET.proj)
 Present
 
 PETHknmi.xts <- PETH.gen(knmi.xts$t)
@@ -44,6 +47,135 @@ Future.sm <- et.calc(SOIL_MAX=SOIL.MAX,Temp = sm.xts$t, Prec=sm.xts$P, PET.real=
 PETHremo.xts <- PETH.gen(remo.xts$t)
 PET.proj.remo <- predict.PETH(seg.result, PETHremo.xts)
 Future.remo <- et.calc(SOIL_MAX=SOIL.MAX,Temp = remo.xts$t, Prec=remo.xts$P, PET.real=PET.proj.remo)
+
+####################################################################################################
+
+dat.win <- c('2001/2010','2010/2040','2040/2070','2070/2100')
+et.sum.dm <- numeric(4)
+for(tti in 1:length(dat.win)) et.sum.dm[tti] <- mean(Future.dm$ET_M[dat.win[tti]],na.rm=T)
+ttpredict.time <- c('2005-06-15','2025-06-15','2055-06-15','2085-06-15')
+plot(xts(et.sum.dm,as.POSIXct(ttpredict.time)),type="p",pch=18,main="", xaxt="n", ylab="ET_M [mm/month]")
+axis(1,at=as.POSIXct(c('2005-06-15','2025-06-15','2055-06-15','2085-06-15')), lab=dat.win)
+
+soil.sum.dm <- numeric(4)
+for(tti in 1:length(dat.win)) soil.sum.dm[tti] <- mean(Future.dm$SOIL_M[dat.win[tti]],na.rm=T)
+plot(xts(soil.sum.dm,as.Date(ttpredict.time)),type="p",pch=18,main="", xaxt="n", ylab="SOIL_M [mm/month]")
+axis(1,at=as.POSIXct(c('2005-06-15','2025-06-15','2055-06-15','2085-06-15')), lab=dat.win)
+
+
+soil.min.dm <- numeric(4)
+for(tti in 1:length(dat.win)) soil.min.dm[tti] <-min(Future.dm$SOIL_M[dat.win[tti]],na.rm=T)
+plot(xts(soil.min.dm,as.Date(ttpredict.time)),type="p",pch=18,main="", xaxt="n", ylab="Min. of SOIL_M [mm/month]")
+axis(1,at=as.POSIXct(c('2005-06-15','2025-06-15','2055-06-15','2085-06-15')), lab=dat.win)
+
+####################################################x
+
+dat.win <- c('2001/2010','2010/2040','2040/2070','2070/2100')
+et.sum.sm <- numeric(4)
+for(tti in 1:length(dat.win)) et.sum.sm[tti] <- mean(Future.sm$ET_M[dat.win[tti]],na.rm=T)
+ttpredict.time <- c('2005-06-15','2025-06-15','2055-06-15','2085-06-15')
+plot(xts(et.sum.sm,as.POSIXct(ttpredict.time)),type="p",pch=18,main="SMHIRCA models evapotranspiration prediction", xaxt="n", ylab="ET_M [mm/month]")
+axis(1,at=as.POSIXct(c('2005-06-15','2025-06-15','2055-06-15','2085-06-15')), lab=dat.win)
+
+
+soil.sum.sm <- numeric(4)
+for(tti in 1:length(dat.win)) soil.sum.sm[tti] <- mean(Future.sm$SOIL_M[dat.win[tti]],na.rm=T)
+plot(xts(soil.sum.sm,as.Date(ttpredict.time)),type="p",pch=18,main="SMHIRCA models soil moisture prediction", xaxt="n", ylab="SOIL_M [mm/month]")
+axis(1,at=as.POSIXct(c('2005-06-15','2025-06-15','2055-06-15','2085-06-15')), lab=dat.win)
+
+
+soil.min.sm <- numeric(4)
+for(tti in 1:length(dat.win)) soil.min.sm[tti] <-min(Future.sm$SOIL_M[dat.win[tti]],na.rm=T)
+plot(xts(soil.min.sm,as.Date(ttpredict.time)),type="p",pch=18,main="", xaxt="n", ylab="Min. of SOIL_M [mm/month]")
+axis(1,at=as.POSIXct(c('2005-06-15','2025-06-15','2055-06-15','2085-06-15')), lab=dat.win)
+
+################################################################################################
+
+dat.win <- c('2001/2010','2010/2040','2040/2070','2070/2100')
+et.sum.remo <- numeric(4)
+for(tti in 1:length(dat.win)) et.sum.remo[tti] <- mean(Future.remo$ET_M[dat.win[tti]],na.rm=T)
+ttpredict.time <- c('2005-06-15','2025-06-15','2055-06-15','2085-06-15')
+plot(xts(et.sum.remo,as.POSIXct(ttpredict.time)),type="p",pch=18,main="REMO models evapotranspiration prediction", xaxt="n", ylab="ET_M [mm/month]")
+axis(1,at=as.POSIXct(c('2005-06-15','2025-06-15','2055-06-15','2085-06-15')), lab=dat.win)
+
+
+soil.sum.remo <- numeric(4)
+for(tti in 1:length(dat.win)) soil.sum.remo[tti] <- mean(Future.remo$SOIL_M[dat.win[tti]],na.rm=T)
+plot(xts(soil.sum.remo,as.Date(ttpredict.time)),type="p",pch=18,main="Remo models soil moisture prediction", xaxt="n", ylab="SOIL_M [mm/month]")
+axis(1,at=as.POSIXct(c('2005-06-15','2025-06-15','2055-06-15','2085-06-15')), lab=dat.win)
+
+
+soil.min.remo <- numeric(4)
+for(tti in 1:length(dat.win)) soil.min.remo[tti] <-min(Future.remo$SOIL_M[dat.win[tti]],na.rm=T)
+plot(xts(soil.min.remo,as.Date(ttpredict.time)),type="p",pch=18,main="", xaxt="n", ylab="Min. of SOIL_M [mm/month]")
+axis(1,at=as.POSIXct(c('2005-06-15','2025-06-15','2055-06-15','2085-06-15')), lab=dat.win)
+
+###################################################################################################
+
+dat.win <- c('2001/2010','2010/2040','2040/2070','2070/2100')
+et.sum.knmi <- numeric(4)
+for(tti in 1:length(dat.win)) et.sum.knmi[tti] <- mean(Future.knmi$ET_M[dat.win[tti]],na.rm=T)
+ttpredict.time <- c('2005-06-15','2025-06-15','2055-06-15','2085-06-15')
+plot(xts(et.sum,as.POSIXct(ttpredict.time)),type="p",pch=18,main="KNMIRACMO2 models evapotranspiration prediction", xaxt="n", ylab="ET_M [mm/month]")
+axis(1,at=as.POSIXct(c('2005-06-15','2025-06-15','2055-06-15','2085-06-15')), lab=dat.win)
+
+
+soil.sum.knmi <- numeric(4)
+for(tti in 1:length(dat.win)) soil.sum.knmi[tti] <- mean(Future.knmi$SOIL_M[dat.win[tti]],na.rm=T)
+plot(xts(soil.sum.knmi,as.Date(ttpredict.time)),type="p",pch=18, main="KNMIRACMO2 models soil moisture prediction", xaxt="n", ylab="SOIL_M [mm/month]")
+axis(1,at=as.POSIXct(c('2005-06-15','2025-06-15','2055-06-15','2085-06-15')), lab=dat.win)
+
+
+soil.min.knmi <- numeric(4)
+for(tti in 1:length(dat.win)) soil.min.knmi[tti] <-min(Future.knmi$SOIL_M[dat.win[tti]],na.rm=T)
+plot(xts(soil.min.knmi,as.Date(ttpredict.time)),type="p",pch=18,main="", xaxt="n", ylab="Min. of SOIL_M [mm/month]")
+axis(1,at=as.POSIXct(c('2005-06-15','2025-06-15','2055-06-15','2085-06-15')), lab=dat.win)
+
+
+###################################################################################################
+
+### Közös ábra ET
+
+plot(xts(et.sum.dm,as.POSIXct(ttpredict.time)),type="p",pch=18,main="", xaxt="n", ylab="ET_M [mm/month]",ylim=c(35,55))
+axis(1,at=as.POSIXct(c('2005-06-15','2025-06-15','2055-06-15','2085-06-15')), lab=dat.win)
+points(xts(et.sum.dm,as.POSIXct(ttpredict.time)),pch=18)
+points(xts(et.sum.sm,as.POSIXct(ttpredict.time)),pch=17,col="darkgreen")
+points(xts(et.sum.remo,as.POSIXct(ttpredict.time)),pch=16,col="darkblue")
+points(xts(et.sum.knmi,as.POSIXct(ttpredict.time)),pch=16,col="red")
+
+legend("bottomright",c("remo","smhirca","dm", "knmiracmo2"),pch=c(16,17,18,16),col=c("darkblue","darkgreen","black", "red"), cex=0.8)
+
+
+###################################################################################################
+
+#### SOIL közös ábára
+
+## Közös ábra
+plot(xts(soil.sum.dm,as.POSIXct(ttpredict.time)),type="p",pch=18,main="", xaxt="n", ylab="SOIL_M [mm/month]",ylim=c(150,620))
+axis(1,at=as.POSIXct(c('2005-06-15','2025-06-15','2055-06-15','2085-06-15')), lab=dat.win)
+points(xts(soil.sum.dm,as.POSIXct(ttpredict.time)),pch=18)
+points(xts(soil.sum.sm,as.POSIXct(ttpredict.time)),pch=17,col="darkgreen")
+points(xts(soil.sum.remo,as.POSIXct(ttpredict.time)),pch=16,col="darkblue")
+points(xts(soil.sum.knmi,as.POSIXct(ttpredict.time)),pch=19,col="red")
+legend("bottomright",c("remo","smhirca","dm", "knmiracmo2"),pch=c(16,17,18,15),col=c("darkblue","darkgreen","black", "red"), cex=0.7)
+lines(xts(soil.sum.allaverage,as.POSIXct(ttpredict.time)),pch=19,col="gold")
+
+########################
+
+#### SOIL_M !MIN! közös ábra
+
+## Közös ábra
+plot(xts(soil.min.dm,as.POSIXct(ttpredict.time)),type="p",pch=18,main="", xaxt="n", ylab="SOIL_M [mm/month]",ylim=c(0,420))
+axis(1,at=as.POSIXct(c('2005-06-15','2025-06-15','2055-06-15','2085-06-15')), lab=dat.win)
+points(xts(soil.min.dm,as.POSIXct(ttpredict.time)),pch=18)
+points(xts(soil.min.sm,as.POSIXct(ttpredict.time)),pch=17,col="darkgreen")
+points(xts(soil.min.remo,as.POSIXct(ttpredict.time)),pch=16,col="darkblue")
+points(xts(soil.min.knmi,as.POSIXct(ttpredict.time)),pch=19,col="red")
+
+legend("bottomleft",c("remo","smhirca","dm", "knmiracmo2"),pch=c(16,17,18,15),col=c("darkblue","darkgreen","black", "red"), cex=0.65)
+lines(xts(soil.min.allaverage,as.POSIXct(ttpredict.time)),pch=19,col="gold")
+##################################################################################################
+
 
 dmproj = read.csv2("DMI_HIRHAM5_A1B_ARPEGE_1951_2000.csv", stringsAsFactors= FALSE) 
 dmproj.xts <- xts(dmproj[-1] , order.by = as.Date(dmproj$Date, format="%Y-%m-%d"))
