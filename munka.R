@@ -176,6 +176,20 @@ legend("bottomleft",c("remo","smhirca","dm", "knmiracmo2"),pch=c(16,17,18,15),co
 lines(xts(soil.min.allaverage,as.POSIXct(ttpredict.time)),pch=19,col="gold")
 ##################################################################################################
 
+plot.prectemp <- function(temp, prec) {
+  ## plot temp.
+  temp.min = -10
+  temp.max = 35
+  plot(temp, main="", ylim=c(temp.min, temp.max), xaxs= "i", yaxs = "i")
+  par( new=TRUE)
+  ## plot prec.
+  prec.max = 350
+  plot(prec, type="h", ylim=c(prec.max, 0), main="", axes=FALSE, xaxs= "i", yaxs = "i")
+  axis(4)
+}
+
+##############################################################################################x
+
 
 dmproj = read.csv2("DMI_HIRHAM5_A1B_ARPEGE_1951_2000.csv", stringsAsFactors= FALSE) 
 dmproj.xts <- xts(dmproj[-1] , order.by = as.Date(dmproj$Date, format="%Y-%m-%d"))
