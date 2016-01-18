@@ -195,10 +195,32 @@ plot(Present$SOIL_M, main ="", xaxs= "i")
 
 ##############################################################################################x
 
+dir(patt="00.csv")
 
-dmproj = read.csv2("DMI_HIRHAM5_A1B_ARPEGE_1951_2000.csv", stringsAsFactors= FALSE) 
-dmproj.xts <- xts(dmproj[-1] , order.by = as.Date(dmproj$Date, format="%Y-%m-%d"))
-plot(dmproj.xts$T)
+rcm.readin <- function(file.past, file.future) {
+    past <- read.csv2(file.past, stringsAsFactors= FALSE)
+    future <- read.csv2(file.future, stringsAsFactors= FALSE)
+    raw <- rbind(past,future)
+    date.full <- as.Date(raw$Date, format="%Y-%m-%d")
+    xts(raw[-1] , order.by = date.full )
+}
+
+## MEGNÉZNI!!! A jövőben 30 naposak a hónapok!!! Hogyan korrigáljuk? A múltban miért nem 30 napos?
+dmi.arpege <- rcm.readin("DMI_HIRHAM5_A1B_ARPEGE_1951_2000.csv","DMI_HIRHAM5_A1B_ARPEGE_2001_2100.csv")
+
+plot(dmi.arpege$T, xaxs="i")
+plot(dmi.arpege$P, typ="h", xaxs="i")
+
+## Elgondolkodtató
+pdf(width=28)
+plot(apply.yearly(dmi.arpege$P,sum),xaxs="i",type="n",main="DMI.ARPEGE csapadék")
+lines(apply.yearly(dmi.arpege$P,sum),typ="h",col="royalblue",lwd=2)
+
+dmi.echam <- rcm.readin( "DMI_HIRHAM5_ECHAM5_1951_2000.csv","DMI_HIRHAM5_ECHAM5_2001_2100.csv")
+
+plot(apply.yearly(dmi.echam$P,sum),xaxs="i",type="n",main="DMI.ECHAM csapadék")
+lines(apply.yearly(dmi.echam$P,sum),typ="h",col="royalblue",lwd=2)
+
 
 dmechproj = read.csv2("DMI_HIRHAM5_ECHAM5_1951_2000.csv", stringsAsFactors= FALSE) 
 dmechproj.xts <- xts(dmechproj[-1] , order.by = as.Date(dmechproj$Date, format="%Y-%m-%d"))
