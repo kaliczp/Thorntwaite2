@@ -1,11 +1,11 @@
 #Step-by-step work.
 library(et.proj)
-rawmovar = read.csv2("raw.csv", stringsAsFactors= FALSE) 
-rawmovar.xts <- xts(rawmovar[-1] , order.by = as.Date(rawmovar$Index))
+raw = read.csv2("raw.csv", stringsAsFactors= FALSE) 
+raw.xts <- xts(raw[-1] , order.by = as.Date(raw$Index))
 
-PETH.xts <- PETH.gen(rawmovar.xts$t)
+PETH.xts <- PETH.gen(raw.xts$t)
 
-forsegment.df <- df.segmentit.gen(rawmovar.xts[,1], PETH.xts, rawmovar.xts$P)
+forsegment.df <- df.segmentit.gen(raw.xts[,1], PETH.xts, raw.xts$P)
 
 ## Initial linear regression
 lm.fit <- lm(CREMAP ~ PETH - 1 , data=forsegment.df)
@@ -24,12 +24,9 @@ text(seg.result$psi[2], 0.5, lab=round(seg.result$psi[2],1), srt=90, adj=c(0, -0
 
 PET.proj <- predict.PETH(seg.result, PETH.xts)
 
-SOIL.MAX <- optimize(et.test, interval=c(100,10000), temp = rawmovar.xts$t, prec=rawmovar.xts$P, pet.real=PET.proj, cremap=rawmovar.xts[,1])$minimum
+SOIL.MAX <- optimize(et.test, interval=c(100,10000), temp = raw.xts$t, prec=raw.xts$P, pet.real=PET.proj, cremap=raw.xts[,1])$minimum
 
 Present = et.calc(SOIL_MAX=SOIL.MAX,Temp = raw.xts$t, Prec=raw.xts$P, PET.real=PET.proj)
-Present
-
-## Present = et.calc(SOIL_MAX=SOIL.MAX,Temp = raw.xts$t, Prec=raw.xts$P, PET.real=PET.proj)
 Present
 
 PETHknmi.xts <- PETH.gen(knmi.xts$t)
@@ -165,28 +162,36 @@ lines(xts(soil.sum.allaverage,as.POSIXct(ttpredict.time)),pch=19,col="gold")
 #### SOIL_M !MIN! közös ábra
 
 ## Közös ábra
-plot(xts(soil.min.dm,as.POSIXct(ttpredict.time)),type="p",pch=18,main="", xaxt="n", ylab="SOIL_M [mm/month]",ylim=c(0,420))
+plot(xts(soil.min.dm,as.POSIXct(ttpredict.time)),type="p",pch=18,main="", xaxt="n", ylab="SOIL_M [mm/month]",ylim=c(0,405))
 axis(1,at=as.POSIXct(c('2005-06-15','2025-06-15','2055-06-15','2085-06-15')), lab=dat.win)
 points(xts(soil.min.dm,as.POSIXct(ttpredict.time)),pch=18)
 points(xts(soil.min.sm,as.POSIXct(ttpredict.time)),pch=17,col="darkgreen")
 points(xts(soil.min.remo,as.POSIXct(ttpredict.time)),pch=16,col="darkblue")
 points(xts(soil.min.knmi,as.POSIXct(ttpredict.time)),pch=19,col="red")
 
-legend("bottomleft",c("remo","smhirca","dm", "knmiracmo2"),pch=c(16,17,18,15),col=c("darkblue","darkgreen","black", "red"), cex=0.65)
+legend("topleft",c("remo","smhirca","dm", "knmiracmo2"),pch=c(16,17,18,15),col=c("darkblue","darkgreen","black", "red"), cex=0.65)
 lines(xts(soil.min.allaverage,as.POSIXct(ttpredict.time)),pch=19,col="gold")
 ##################################################################################################
 
-plot.prectemp <- function(temp, prec) {
+plot.prectemp <- function(temp, prec , xaxt = "s") {
   ## plot temp.
   temp.min = -10
   temp.max = 35
-  plot(temp, main="", ylim=c(temp.min, temp.max), xaxs= "i", yaxs = "i")
+  plot(temp, main="", ylim=c(temp.min, temp.max), xaxs= "i", yaxs = "i", xaxt = xaxt)
   par( new=TRUE)
   ## plot prec.
   prec.max = 350
   plot(prec, type="h", ylim=c(prec.max, 0), main="", axes=FALSE, xaxs= "i", yaxs = "i")
   axis(4)
 }
+
+par(mfrow = c(3,1), mar=c(0, 4.1, 0, 4.1), oma = c(4.4, 0, 0.5, 0), las=1)
+plot.prectemp(raw.xts$t, raw.xts$P, xaxt = "n")
+
+plot(raw.xts$ET.CREMAP, main="", xaxt = "n", xaxs= "i")
+lines(Present$ET_M, col="magenta")
+
+plot(Present$SOIL_M, main ="", xaxs= "i")
 
 ##############################################################################################x
 
