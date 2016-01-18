@@ -207,41 +207,13 @@ rcm.readin <- function(file.past, file.future) {
 
 ## MEGNÉZNI!!! A jövőben 30 naposak a hónapok!!! Hogyan korrigáljuk? A múltban miért nem 30 napos?
 dmi.arpege <- rcm.readin("DMI_HIRHAM5_A1B_ARPEGE_1951_2000.csv","DMI_HIRHAM5_A1B_ARPEGE_2001_2100.csv")
-
-plot(dmi.arpege$T, xaxs="i")
-plot(dmi.arpege$P, typ="h", xaxs="i")
-
-## Elgondolkodtató
-pdf(width=28)
-plot(apply.yearly(dmi.arpege$P,sum),xaxs="i",type="n",main="DMI.ARPEGE csapadék")
-lines(apply.yearly(dmi.arpege$P,sum),typ="h",col="royalblue",lwd=2)
-
 dmi.echam <- rcm.readin( "DMI_HIRHAM5_ECHAM5_1951_2000.csv","DMI_HIRHAM5_ECHAM5_2001_2100.csv")
+knmi.racmo2 <- rcm.readin("KNMI_RACMO2_A1B_ECHAM5_r3_1951_2000.csv","KNMI_RACMO2_A1B_ECHAM5_r3_2001_2100.csv")
+remo.echam <- rcm.readin("MPI-M-REMO_SCN_ECHAM5_1951_2000.csv","MPI-M-REMO_SCN_ECHAM5_2001_2100.csv")
+## MEGNÉZNI vmi hiba!
+smhirca.bcm <- rcm.readin("SMHIRCA_A1B_BCM_1961_2000.csv","SMHIRCA_A1B_BCM_2001_2100.csv")
+smhirca.bcm <- smhirca.bcm['1961-01-01/2100-01-11',]
 
-plot(apply.yearly(dmi.echam$P,sum),xaxs="i",type="n",main="DMI.ECHAM csapadék")
-lines(apply.yearly(dmi.echam$P,sum),typ="h",col="royalblue",lwd=2)
+plot(smhirca.bcm$T, xaxs="i")
+plot(dmi.echam$P, typ="h", xaxs="i")
 
-
-dmechproj = read.csv2("DMI_HIRHAM5_ECHAM5_1951_2000.csv", stringsAsFactors= FALSE) 
-dmechproj.xts <- xts(dmechproj[-1] , order.by = as.Date(dmechproj$Date, format="%Y-%m-%d"))
-plot(dmechproj.xts$T)
-
-remoproj = read.csv2("MPI-M-REMO_SCN_ECHAM5_1951_2000.csv", stringsAsFactors= FALSE) 
-remoproj.xts <- xts(remoproj[-1] , order.by = as.Date(remoproj$Date, format="%Y-%m-%d"))
-plot(remoproj.xts$T)
-
-dmproj = read.csv2("DMI_HIRHAM5_A1B_ARPEGE_1951_2000.csv", stringsAsFactors= FALSE) 
-dmproj.xts <- xts(dmproj[-1] , order.by = as.Date(dmproj$Date, format="%Y-%m-%d"))
-plot(dmproj.xts$T)
-
-knmiproj = read.csv2("KNMI_RACMO2_A1B_ECHAM5_r3_1951_2000.csv", stringsAsFactors= FALSE) 
-knmiproj.xts <- xts(knmiproj[-1] , order.by = as.Date(knmiproj$Date, format="%Y-%m-%d"))
-plot(knmiproj.xts$T)
-
-smhircaproj = read.csv2("SMHIRCA_A1B_BCM_1961_2000.csv", stringsAsFactors= FALSE) 
-smhircaproj.xts <- xts(smhircaproj[-1] , order.by = as.Date(smhircaproj$Date, format="%Y-%m-%d"))
-plot(smhircaproj.xts$T)
-
-dmfutureproj = read.csv2("DMI_HIRHAM5_ECHAM5_2001_2100.csv", stringsAsFactors= FALSE) 
-dmfutureproj.xts <- xts(dmfutureproj[-1] , order.by = as.Date(dmfutureproj$Date, format="%Y-%m-%d"))
-plot(dmfutureproj.xts$T)
