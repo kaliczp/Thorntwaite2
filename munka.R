@@ -29,23 +29,7 @@ SOIL.MAX <- optimize(et.test, interval=c(100,10000), temp = raw.xts$t, prec=raw.
 Present = et.calc(SOIL_MAX=SOIL.MAX,Temp = raw.xts$t, Prec=raw.xts$P, PET.real=PET.proj)
 Present
 
-PETHknmi.xts <- PETH.gen(knmi.xts$t)
-PET.proj.knmi <- predict.PETH(seg.result, PETHknmi.xts)
-Future.knmi <- et.calc(SOIL_MAX=SOIL.MAX,Temp = knmi.xts$t, Prec=knmi.xts$P, PET.real=PET.proj.knmi)
-
-PETHdm.xts <- PETH.gen(dm.xts$t)
-PET.proj.dm <- predict.PETH(seg.result, PETHdm.xts)
-Future.dm <- et.calc(SOIL_MAX=SOIL.MAX,Temp = dm.xts$t, Prec=dm.xts$P, PET.real=PET.proj.dm)
-
-PETHsm.xts <- PETH.gen(sm.xts$t)
-PET.proj.sm <- predict.PETH(seg.result, PETHsm.xts)
-Future.sm <- et.calc(SOIL_MAX=SOIL.MAX,Temp = sm.xts$t, Prec=sm.xts$P, PET.real=PET.proj.sm)
-
-PETHremo.xts <- PETH.gen(remo.xts$t)
-PET.proj.remo <- predict.PETH(seg.result, PETHremo.xts)
-Future.remo <- et.calc(SOIL_MAX=SOIL.MAX,Temp = remo.xts$t, Prec=remo.xts$P, PET.real=PET.proj.remo)
-
-####################################################################################################
+###################x
 
 dat.win <- c('2001/2010','2010/2040','2040/2070','2070/2100')
 et.sum.dm <- numeric(4)
@@ -142,7 +126,6 @@ points(xts(et.sum.knmi,as.POSIXct(ttpredict.time)),pch=16,col="red")
 
 legend("bottomright",c("remo","smhirca","dm", "knmiracmo2"),pch=c(16,17,18,16),col=c("darkblue","darkgreen","black", "red"), cex=0.8)
 
-
 ###################################################################################################
 
 #### SOIL közös ábára
@@ -217,3 +200,39 @@ smhirca.bcm <- smhirca.bcm['1961-01-01/2100-01-11',]
 plot(smhirca.bcm$T, xaxs="i")
 plot(dmi.echam$P, typ="h", xaxs="i")
 
+######## Havi átlagok képzése
+
+monthly.T_dmi.arpege <- apply.monthly(dmi.arpege$T,mean)
+monthly.P_dmi.arpege <- apply.monthly(dmi.arpege$P,sum)
+
+monthly.T_dmi.echam <- apply.monthly(dmi.echam$T,mean)
+monthly.P_dmi.echam <- apply.monthly(dmi.echam$P,sum)
+
+monthly.T_knmi.racmo2 <- apply.monthly(knmi.racmo2$T,mean)
+monthly.P_knmi.racmo2 <- apply.monthly(knmi.racmo2$P,sum)
+
+monthly.T_remo.echam <- apply.monthly(remo.echam$T,mean)
+monthly.P_remo.echam <- apply.monthly(remo.echam$P,sum)
+
+monthly.T_smhirca.bcm <- apply.monthly(smhirca.bcm$T,mean)
+monthly.P_smhirca.bcm <- apply.monthly(smhirca.bcm$P,sum)
+
+########################
+
+PETHknmi.xts <- PETH.gen(monthly.T_knmi.racmo2)
+PET.proj.knmi <- predict.PETH(seg.result, PETHknmi.xts)
+Future.knmi <- et.calc(SOIL_MAX=SOIL.MAX,Temp = knmi.xts$t, Prec=knmi.xts$P, PET.real=PET.proj.knmi)
+
+PETHdm.xts <- PETH.gen(monthly.T_dmi.echam)
+PET.proj.dm <- predict.PETH(seg.result, PETHdm.xts)
+Future.dm <- et.calc(SOIL_MAX=SOIL.MAX,Temp = dm.xts$t, Prec=dm.xts$P, PET.real=PET.proj.dm)
+
+PETHsm.xts <- PETH.gen(monthly.T_smhirca.bcm)
+PET.proj.sm <- predict.PETH(seg.result, PETHsm.xts)
+Future.sm <- et.calc(SOIL_MAX=SOIL.MAX,Temp = sm.xts$t, Prec=sm.xts$P, PET.real=PET.proj.sm)
+
+PETHremo.xts <- PETH.gen(monthly.T_remo.echam)
+PET.proj.remo <- predict.PETH(seg.result, PETHremo.xts)
+Future.remo <- et.calc(SOIL_MAX=SOIL.MAX,Temp = remo.xts$t, Prec=remo.xts$P, PET.real=PET.proj.remo)
+
+####################################################################################################
