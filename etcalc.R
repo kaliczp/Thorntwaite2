@@ -10,17 +10,19 @@ et.calc <- function(SOIL_MAX, Temp, Prec, PET.real) {
     ## Set the first value of modelled ET to NA
     TET.df$ET_M[1] <- NA
     for(tti in 2:nrow(Temp)){
-        if(Prec[tti] > PET.real[tti]){
+        curr.prec <- as.numeric(Prec[tti])
+        curr.pet <- as.numeric(PET.real[tti])
+        if (curr.prec > curr.pet) {
             TET.df$SOIL_M[tti] <- min(
-                c(as.vector(Prec[tti] - PET.real[tti] + TET.df$SOIL_M[tti-1]),
+                c(as.vector(curr.prec - curr.pet + TET.df$SOIL_M[tti-1]),
                   SOIL_MAX
                   )
             )
-            TET.df$ET_M[tti] <- PET.real[tti]
+            TET.df$ET_M[tti] <- curr.pet
         } else {
             TET.df$SOIL_M[tti] <- TET.df$SOIL_M[tti-1] *
-                exp(-(PET.real[tti]-Prec[tti]) / SOIL_MAX)
-            TET.df$ET_M[tti] <- Prec[tti] +
+                exp(-(curr.pet - curr.prec) / SOIL_MAX)
+            TET.df$ET_M[tti] <- curr.prec +
                 TET.df$SOIL_M[tti-1] -
                     TET.df$SOIL_M[tti]
         }
