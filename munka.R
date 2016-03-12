@@ -32,6 +32,16 @@ SOIL.MAX <- optimize(et.test, interval=c(100,10000), temp = raw.xts$t, prec=raw.
 
 Present = et.calc(SOIL_MAX=SOIL.MAX,Temp = raw.xts$t, Prec=raw.xts$P, PET.real=PET.proj)
 
+########################################################################
+
+## Adatok kinyerése a jelenre
+
+plot(coredata(raw.xts$ET.CREMAP) ~ coredata(Present$ET_M), pch=18,col="darkgreen", xlab="ET_M", ylab="PET CREMAP", xlim = c(0,140), ylim=c(0,160))
+Tttmp.lm <- lm(coredata(raw.xts$ET.CREMAP) ~ coredata(Present$ET_M))
+Tttmp.sum <- summary(Tttmp.lm)
+abline(Tttmp.lm)
+legend("topleft",c(paste("ET CREMAP =",round(coef(Tttmp.lm)[2],2) ,"* ET_M +",round(coef(Tttmp.lm)[1],2)),paste("R^2 =",round(Tttmp.sum$r.squared,2))))
+
 ################################## csap és hőmérséklet egy ábárán!! ##############
 
 plot.prectemp <- function(temp, prec , xaxt = "s") {
@@ -50,7 +60,7 @@ par(mfrow = c(3,1), mar=c(0, 4.1, 0, 4.1), oma = c(4.4, 0, 0.5, 0), las=1)
 plot.prectemp(raw.xts$t, raw.xts$P, xaxt = "n")
 
 plot(raw.xts$ET.CREMAP, main="", xaxs= "i")
-lines(Present$ET_M, col="magenta")
+lines(Present$ET_M, col="green")
 
 plot(Present$SOIL_M, main ="", xaxs= "i")
 
@@ -130,11 +140,11 @@ Future.dm <- et.calc(SOIL_MAX=SOIL.MAX,Temp = monthly.T_dmi.echam$t, Prec=monthl
 
 PETHsm.xts <- PETH.gen(monthly.T_smhirca.bcm)
 PET.proj.sm <- predict.PETH(seg.result, PETHsm.xts)
-Future.sm <- et.calc(SOIL_MAX=SOIL.MAX,Temp = monthly.T_smhirca.bcm$T, Prec=monthly.P_smhirca.bcm$P, PET.real=PET.proj.sm)
+Future.sm <- et.calc(SOIL_MAX=SOIL.MAX,Temp = monthly.T_smhirca.bcm$t, Prec=monthly.P_smhirca.bcm$p, PET.real=PET.proj.sm)
 
 PETHremo.xts <- PETH.gen(monthly.T_remo.echam)
 PET.proj.remo <- predict.PETH(seg.result, PETHremo.xts)
-Future.remo <- et.calc(SOIL_MAX=SOIL.MAX,Temp = monthly.T_remo.echam$T, Prec=monthly.P_remo.echam$P, PET.real=PET.proj.remo)
+Future.remo <- et.calc(SOIL_MAX=SOIL.MAX,Temp = monthly.T_remo.echam$t, Prec=monthly.P_remo.echam$p, PET.real=PET.proj.remo)
 
 ####################################################################################################
 
@@ -239,7 +249,7 @@ points(xts(soil.sum.dm/soil.sum.dm[1]*100,as.POSIXct(ttpredict.time)),pch=15, ce
 points(xts(soil.sum.sm/soil.sum.sm[1]*100,as.POSIXct(ttpredict.time)),pch=17, cex=1.4, col="darkgreen")
 points(xts(soil.sum.remo/soil.sum.remo[1]*100,as.POSIXct(ttpredict.time)),pch=16, cex=1.4, col="darkblue")
 points(xts(soil.sum.knmi/soil.sum.knmi[1]*100,as.POSIXct(ttpredict.time)),pch=8, cex=1.4, col="red")
-legend("bottomleft",c("remo","smhirca","dm", "knmiracmo2"),pch=c(16,17,15,8),col=c("darkblue","darkgreen","black", "red"), cex=0.7)
+legend("topleft",c("remo","smhirca","dm", "knmiracmo2"),pch=c(16,17,15,8),col=c("darkblue","darkgreen","black", "red"), cex=0.7)
 lines(xts(soil.sum.allavg/soil.sum.allavg[1]*100,as.POSIXct(ttpredict.time)),pch=19,col="gold")
 
 ####################################################################################################
@@ -247,12 +257,12 @@ lines(xts(soil.sum.allavg/soil.sum.allavg[1]*100,as.POSIXct(ttpredict.time)),pch
 #### SOIL_M !MIN! közös ábra
 
 ## Közös ábra
-plot(xts(soil.min.dm/soil.min.dm[1]*100,as.POSIXct(ttpredict.time)),type="p",pch=15, cex=1.4, main="", xaxt="n", ylab="SOIL_M [%]",ylim=c(0,150))
+plot(xts(soil.min.dm/soil.min.dm[1]*100,as.POSIXct(ttpredict.time)),type="p",pch=15, cex=1.4, main="", xaxt="n", ylab="SOIL_M [%]",ylim=c(0,400))
 axis(1,at=as.POSIXct(c('1995-06-15','2025-06-15','2055-06-15','2085-06-15')), lab=dat.win.plt)
 points(xts(soil.min.dm/soil.min.dm[1]*100,as.POSIXct(ttpredict.time)),pch=15, cex=1.4)
 points(xts(soil.min.sm/soil.min.sm[1]*100,as.POSIXct(ttpredict.time)),pch=17, cex=1.4, col="darkgreen")
 points(xts(soil.min.remo/soil.min.remo[1]*100,as.POSIXct(ttpredict.time)),pch=16, cex=1.4, col="darkblue")
 points(xts(soil.min.knmi/soil.min.knmi[1]*100,as.POSIXct(ttpredict.time)),pch=8, cex=1.4, col="red")
 
-legend("bottomleft",c("remo","smhirca","dm", "knmiracmo2"),pch=c(16,17,15,8),col=c("darkblue","darkgreen","black", "red"), cex=0.6)
+legend("topleft",c("remo","smhirca","dm", "knmiracmo2"),pch=c(16,17,15,8),col=c("darkblue","darkgreen","black", "red"), cex=0.6)
 lines(xts(soil.min.allavg/soil.min.allavg[1]*100,as.POSIXct(ttpredict.time)),pch=19,col="gold")
