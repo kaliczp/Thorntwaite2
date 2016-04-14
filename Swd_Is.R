@@ -4,7 +4,7 @@ plot(Future.sm$SOIL_M, ylim=c(100, 520))
 plot(Future.dm$SOIL_M)
 
 rcm.soilm.avg = (Future.knmi['2001/2098','SOIL_M'] + Future.sm['2001/2098','SOIL_M'] + Future.remo['2001/2098','SOIL_M'] + Future.dm['2001/2098','SOIL_M']) / 4
-plot(rcm.soilm.avg, ylim=c(100,520))
+plot(rcm.soilm.avg, ylim=c(0,150))
 axis(2,SOIL.MAX*0.4, lab=F,tck=1,col=2)
 
 ## Szárazság stressz havi
@@ -65,6 +65,8 @@ rew = function(model, soil.max) {
   mean.2070= mean(REW['2070/2099'])
   data.frame(mean.2001,mean.2010,mean.2040,mean.2070)
 }
+
+axis(at=0.4, side=2, lab=F,tck=1,col=2)
 
 ################ Present REW
 
