@@ -280,7 +280,7 @@ axis(1,at=as.POSIXct(c('2000-06-15','2030-06-15','2060-06-15','2085-06-15')), la
 
 ### Közös ábra ET
 
-plot(xts(et.sum.dm,as.POSIXct(ttpredict.time)),type="p",pch=15, cex=1.4 ,main="", xaxt="n", ylab="ET_M",ylim=c(40,60))
+plot(xts(et.sum.dm,as.POSIXct(ttpredict.time)),type="p",pch=15, cex=1.4 ,main="", xaxt="n", ylab="ET_M [mm]",ylim=c(40,60))
 axis(1,at=as.POSIXct(c('2000-06-15','2030-06-15','2060-06-15','2085-06-15')), lab=dat.win.plt)
 points(xts(et.sum.dm,as.POSIXct(ttpredict.time)),pch=15, cex=1.4)
 points(xts(et.sum.sm,as.POSIXct(ttpredict.time)),pch=17, cex=1.4, col="darkgreen")
@@ -296,13 +296,13 @@ legend("topleft",c("remo","smhirca","dm", "knmiracmo2"),pch=c(16,17,15,8),col=c(
 #### SOIL közös ábára
 
 ## Közös ábra
-plot(xts(soil.sum.dm,as.POSIXct(ttpredict.time)),type="p",pch=15, cex=1.4, main="", xaxt="n", ylab="SOIL_M [%]",ylim=c(45,100))
+plot(xts(soil.sum.dm,as.POSIXct(ttpredict.time)),type="p",pch=15, cex=1.4, main="", xaxt="n", ylab="SOIL_M [mm]",ylim=c(45,100))
 axis(1,at=as.POSIXct(c('2000-06-15','2030-06-15','2060-06-15','2085-06-15')), lab=dat.win.plt)
 points(xts(soil.sum.dm,as.POSIXct(ttpredict.time)),pch=15, cex=1.4)
 points(xts(soil.sum.sm,as.POSIXct(ttpredict.time)),pch=17, cex=1.4, col="darkgreen")
 points(xts(soil.sum.remo,as.POSIXct(ttpredict.time)),pch=16, cex=1.4, col="darkblue")
 points(xts(soil.sum.knmi,as.POSIXct(ttpredict.time)),pch=8, cex=1.4, col="red")
-legend("topleft",c("remo","smhirca","dm", "knmiracmo2"),pch=c(16,17,15,8),col=c("darkblue","darkgreen","black", "red"), cex=0.7)
+legend("topleft",c("remo","smhirca","dm", "knmiracmo2"),pch=c(16,17,15,8),col=c("darkblue","darkgreen","black", "red"), cex=0.8)
 lines(xts(soil.sum.allavg,as.POSIXct(ttpredict.time)),pch=19,col="gold")
 
 ####################################################################################################
@@ -311,7 +311,7 @@ lines(xts(soil.sum.allavg,as.POSIXct(ttpredict.time)),pch=19,col="gold")
 #### SOIL_M !MIN! közös ábra
 
 ## Közös ábra
-plot(xts(soil.min.dm,as.POSIXct(ttpredict.time)),type="p",pch=15, cex=1.4, main="", xaxt="n", ylab="SOIL_M_MIN [%]",ylim=c(0,6))
+plot(xts(soil.min.dm,as.POSIXct(ttpredict.time)),type="p",pch=15, cex=1.4, main="", xaxt="n", ylab="SOIL_M_MIN [mm]",ylim=c(0,6))
 axis(1,at=as.POSIXct(c('2000-06-05','2030-06-15','2060-06-15','2085-06-15')), lab=dat.win.plt)
 points(xts(soil.min.dm,as.POSIXct(ttpredict.time)),pch=15, cex=1.4)
 points(xts(soil.min.sm,as.POSIXct(ttpredict.time)),pch=17, cex=1.4, col="darkgreen")
@@ -406,8 +406,80 @@ points(xts(dm.1980to2100.10Percentile,as.POSIXct(ttpredict.time)),pch=17, cex=1.
 points(xts(sm.1980to2100.10Percentile,as.POSIXct(ttpredict.time)),pch=16, cex=1.4, col="darkblue")
 points(xts(knmi.1980to2100.10Percentile,as.POSIXct(ttpredict.time)),pch=8, cex=1.4, col="red")
 
-legend("bottomleft",c("remo","smhirca","dm", "knmiracmo2"),pch=c(16,17,15,8),col=c("darkblue","darkgreen","black", "red"), cex=0.6)
+legend("bottomleft",c("remo","smhirca","dm", "knmiracmo2"),pch=c(16,17,15,8),col=c("darkblue","darkgreen","black", "red"), cex=0.8)
 
 all.1980to2100.10Percentile = (dm.1980to2100.10Percentile+sm.1980to2100.10Percentile+knmi.1980to2100.10Percentile+remo.1980to2100.10Percentile)/4
 
 lines(xts(all.1980to2100.10Percentile,as.POSIXct(ttpredict.time)),pch=19,col="gold")
+
+#########################################################################################
+#---------------------------------------------------------------------------------------
+####################################################################################
+
+# Standard Deviations ET_M
+
+sd(Future.Present$ET_M['1985/2015'], na.rm=TRUE)
+sd(Future.Present$SOIL_M['1985/2015'], na.rm=TRUE)
+
+Sd.dm.ETM.21st = c(sd(Future.Present$ET_M['1985/2015'], na.rm=TRUE), sd(Future.dm$ET_M['2015/2045'], na.rm=TRUE), sd(Future.dm$ET_M['2045/2075'], na.rm=TRUE), sd(Future.dm$ET_M['2070/2100'], na.rm=TRUE) )
+
+sd(Future.dm$ET_M['2015/2045'], na.rm=TRUE)
+sd(Future.dm$ET_M['2045/2075'], na.rm=TRUE)
+sd(Future.dm$ET_M['2070/2100'], na.rm=TRUE)
+#-------------------------------------------------------
+
+sd(Future.sm$ET_M['2015/2045'], na.rm=TRUE)
+sd(Future.sm$ET_M['2045/2075'], na.rm=TRUE)
+sd(Future.sm$ET_M['2070/2100'], na.rm=TRUE)
+
+Sd.sm.ETM.21st = c(sd(Future.Present$ET_M['1985/2015'], na.rm=TRUE), sd(Future.sm$ET_M['2015/2045'], na.rm=TRUE), sd(Future.sm$ET_M['2045/2075'], na.rm=TRUE), sd(Future.sm$ET_M['2070/2100'], na.rm=TRUE) )
+#---------------------------------------------------------
+
+sd(Future.knmi$ET_M['2015/2045'], na.rm=TRUE)
+sd(Future.knmi$ET_M['2045/2075'], na.rm=TRUE)
+sd(Future.knmi$ET_M['2070/2100'], na.rm=TRUE)
+
+Sd.remo.ETM.21st = c(sd(Future.Present$ET_M['1985/2015'], na.rm=TRUE), sd(Future.remo$ET_M['2015/2045'], na.rm=TRUE), sd(Future.remo$ET_M['2045/2075'], na.rm=TRUE), sd(Future.remo$ET_M['2070/2100'], na.rm=TRUE) )
+#----------------------------------------------------------
+
+sd(Future.remo$ET_M['2015/2045'], na.rm=TRUE)
+sd(Future.remo$ET_M['2045/2075'], na.rm=TRUE)
+sd(Future.remo$ET_M['2070/2100'], na.rm=TRUE)
+
+Sd.knmi.ETM.21st = c(sd(Future.Present$ET_M['1985/2015'], na.rm=TRUE), sd(Future.knmi$ET_M['2015/2045'], na.rm=TRUE), sd(Future.knmi$ET_M['2045/2075'], na.rm=TRUE), sd(Future.knmi$ET_M['2070/2100'], na.rm=TRUE) )
+
+sd.all.ETM.from1985 = (Sd.knmi.ETM.21st+Sd.remo.ETM.21st+Sd.dm.ETM.21st+Sd.sm.21st)/4
+##############################################################################################################
+#Standard Deviations SOIL_M
+
+sd(Future.Present$SOIL_M['1985/2015'], na.rm=TRUE)
+
+Sd.dm.SOILM.21st = c(sd(Future.Present$SOIL_M['1985/2015'], na.rm=TRUE), sd(Future.dm$SOIL_M['2015/2045'], na.rm=TRUE), sd(Future.dm$SOIL_M['2045/2075'], na.rm=TRUE), sd(Future.dm$SOIL_M['2070/2100'], na.rm=TRUE) )
+
+sd(Future.dm$SOIL_M['2015/2045'], na.rm=TRUE)
+sd(Future.dm$SOIL_M['2045/2075'], na.rm=TRUE)
+sd(Future.dm$SOIL_M['2070/2100'], na.rm=TRUE)
+#-------------------------------------------------------
+
+sd(Future.sm$SOIL_M['2015/2045'], na.rm=TRUE)
+sd(Future.sm$SOIL_M['2045/2075'], na.rm=TRUE)
+sd(Future.sm$SOIL_M['2070/2100'], na.rm=TRUE)
+
+Sd.sm.SOILM.21st = c(sd(Future.Present$SOIL_M['1985/2015'], na.rm=TRUE), sd(Future.sm$SOIL_M['2015/2045'], na.rm=TRUE), sd(Future.sm$SOIL_M['2045/2075'], na.rm=TRUE), sd(Future.sm$SOIL_M['2070/2100'], na.rm=TRUE) )
+#---------------------------------------------------------
+
+sd(Future.knmi$SOIL_M['2015/2045'], na.rm=TRUE)
+sd(Future.knmi$SOIL_M['2045/2075'], na.rm=TRUE)
+sd(Future.knmi$SOIL_M['2070/2100'], na.rm=TRUE)
+
+Sd.remo.SOILM.21st = c(sd(Future.Present$SOIL_M['1985/2015'], na.rm=TRUE), sd(Future.remo$SOIL_M['2015/2045'], na.rm=TRUE), sd(Future.remo$SOIL_M['2045/2075'], na.rm=TRUE), sd(Future.remo$SOIL_M['2070/2100'], na.rm=TRUE) )
+#----------------------------------------------------------
+
+sd(Future.remo$SOIL_M['2015/2045'], na.rm=TRUE)
+sd(Future.remo$SOIL_M['2045/2075'], na.rm=TRUE)
+sd(Future.remo$SOIL_M['2070/2100'], na.rm=TRUE)
+
+Sd.knmi.SOILM.21st = c(sd(Future.Present$SOIL_M['1985/2015'], na.rm=TRUE), sd(Future.knmi$SOIL_M['2015/2045'], na.rm=TRUE), sd(Future.knmi$SOIL_M['2045/2075'], na.rm=TRUE), sd(Future.knmi$SOIL_M['2070/2100'], na.rm=TRUE) )
+
+sd.all.SOILM.from1985 = (Sd.knmi.SOILM.21st+Sd.remo.SOILM.21st+Sd.dm.SOILM.21st+Sd.sm.21st)/4
+
